@@ -1,0 +1,4 @@
+{
+  "$schema": "./build.schema.json",
+  "Solution": "api/lukaKry_Calc_v3.sln"
+}
