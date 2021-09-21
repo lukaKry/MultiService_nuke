@@ -1,0 +1,31 @@
+<div id="calc">
+  <div id="display">
+    <div id="topDisplay">
+      <span>{{ topDisplay }}</span>
+    </div>
+    <div id="mainDisplay">
+      <span>{{ mainDisplay }}</span>
+    </div>
+  </div>
+  <div id="pad">
+    <div id="numPad">
+      <div class="numPadButton" *ngFor="let n of numPad" (click)="numButtonIsClicked(n)">
+        {{n}}
+      </div>
+      <div class="numPadButton" (click)="equalButtonIsClicked()">
+        =
+      </div>
+    </div>
+    <div id="symPad">
+      <div class="symPadButton" (click)="clear()">
+        C
+      </div>
+      <div class="symPadButton" *ngFor="let s of symPad" (click)="symButtonIsClicked(s)">
+        {{ s }}
+      </div>
+      <div class="symPadButton" (click)="backspace()">
+        MR
+      </div>
+    </div>
+  </div>
+</div>

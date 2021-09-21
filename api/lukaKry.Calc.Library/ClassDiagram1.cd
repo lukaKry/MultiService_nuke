@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="lukaKry.Calc.Library.Logic.Calculations.BaseCalculation" Collapsed="true">
+    <Position X="3.25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Logic\Calculations\BaseCalculation.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="lukaKry.Calc.Library.Logic.Calculations.Sum" Collapsed="true">
+    <Position X="1.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAEAAAAAAAAAAAAAAAAAEAAAAAAAAA=</HashCode>
+      <FileName>Logic\Calculations\Sum.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="lukaKry.Calc.Library.Logic.Calculations.Subtraction" Collapsed="true">
+    <Position X="3.25" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAEAAAAAAAAAAAAAAAAAEAAAAAAAAA=</HashCode>
+      <FileName>Logic\Calculations\Subtraction.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="lukaKry.Calc.Library.Logic.Calculations.Multiplication" Collapsed="true">
+    <Position X="5" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAEAAAAAAAAAAAAAAAAAEAAAAAAAAA=</HashCode>
+      <FileName>Logic\Calculations\Multiplication.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="lukaKry.Calc.Library.Logic.Calculations.Division" Collapsed="true">
+    <Position X="6.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAADAIAgAAAEAAAAAAAAAAAAAAAAAEAAAAAAAAA=</HashCode>
+      <FileName>Logic\Calculations\Division.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="lukaKry.Calc.Library.Logic.SimpleCalculationBuilder">
+    <Position X="12" Y="1.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAIADAAEAAAAAAAAACAAgAAAAAAAAAAIAAA=</HashCode>
+      <FileName>Logic\CalculationsBuilders\SimpleCalculationBuilder.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="lukaKry.Calc.Library.Logic.Number" Collapsed="true">
+    <Position X="8.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAIAAAAAEAAAAAEAAAAAAAAAAAEAAAAAAAAA=</HashCode>
+      <FileName>Logic\Number.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="lukaKry.Calc.Library.Logic.ICalculation">
+    <Position X="6" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAA=</HashCode>
+      <FileName>Logic\Interfaces\ICalculation.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="lukaKry.Calc.Library.Logic.ICalculationBuilder" Collapsed="true">
+    <Position X="10" Y="2.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAACAAgAAAAAAAAAAIAAA=</HashCode>
+      <FileName>Logic\Interfaces\ICalculationBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="lukaKry.Calc.Library.Logic.ISettableCalculation" Collapsed="true">
+    <Position X="3.75" Y="5.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAADAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Logic\Interfaces\ISettableCalculation.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="lukaKry.Calc.Library.Logic.Interfaces.IPrioritizableCalculation">
+    <Position X="6" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Logic\Interfaces\IPrioritizableCalculation.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
