@@ -73,7 +73,11 @@
             "enum": [
               "Clean",
               "Compile",
-              "Restore"
+              "dbImage",
+              "dbRun",
+              "Publish",
+              "Restore",
+              "TestApi"
             ]
           }
         },
@@ -89,7 +93,11 @@
             "enum": [
               "Clean",
               "Compile",
-              "Restore"
+              "dbImage",
+              "dbRun",
+              "Publish",
+              "Restore",
+              "TestApi"
             ]
           }
         },

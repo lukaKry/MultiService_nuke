@@ -33,6 +33,7 @@ namespace lukaKry.Calc.API.UnitTests.Controllers
         */
 
         [Test]
+        [Category("urgent")]
         public void AddNumber_IncorrectStringNumberFormat_ReturnBadrequestAnswer()
         {
             
