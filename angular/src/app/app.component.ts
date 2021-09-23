@@ -91,7 +91,7 @@ export class AppComponent {
     console.log('------------');
     
     const urlLocal : string = "https://localhost:5001/api/Calculations/solve";
-    const urlDocker : string = "https://localhost:52001/api/Calculations/solve";
+    const urlDocker : string = "http://localhost:52001/api/Calculations/solve";
 
     const headers = {'content-type': 'application/json'};
     this.httpClient.post(urlDocker, JSON.stringify(this.equation), {'headers': headers} )

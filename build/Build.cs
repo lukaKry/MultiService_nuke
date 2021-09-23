@@ -22,7 +22,7 @@ class Build : NukeBuild
 {
     // w tym miejscu jest punkt startowy projektu build
     // jeœli wpiszemy x.Compile, to pierwszy odpali siê target o nazwie Compile; z zachowaniem zale¿noœci (dependantFor, Before, czy Triggers)
-    public static int Main () => Execute<Build>(x => x.apiRun);
+    public static int Main () => Execute<Build>(x => x.AngularRun);
 
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
@@ -114,7 +114,7 @@ class Build : NukeBuild
 
 
     Target CreateCommonNetwork => _ => _
-        .DependsOn(TestApi)
+        .DependsOn(UnitTestApi)
         .Executes(() =>
         {
             DockerNetworkCreate(s => s
@@ -136,14 +136,14 @@ class Build : NukeBuild
         });
 
     Target DbRun => _ => _
-        .DependsOn(dbImage, createNetwork)
+        .DependsOn(DbImage, CreateCommonNetwork)
         .Executes(() =>
         {
             DockerRun(s => s
                .SetImage("db")
                .SetName("db")
                .SetHostname("db")
-               .SetPublish("51001:51001")
+               .SetPublish("51001:1433")
                .SetDetach(true)
                .SetNetwork("multi")
                 );
@@ -162,7 +162,7 @@ class Build : NukeBuild
         });
 
     Target ApiRun => _ => _
-        .DependsOn(apiImage, dbRun)
+        .DependsOn(ApiImage, DbRun)
         .Executes(() => 
         {
             // teraz pozosta³y problemy z certyfikatem ssl
@@ -170,7 +170,7 @@ class Build : NukeBuild
                 .SetImage("api") 
                 .SetName("api")
                 .SetPublish("51444:443")
-                .SetPublish("51443:80")
+                .SetPublish("52001:80")
                 .SetDetach(true)
                 .SetNetwork("multi")
                 .SetProcessEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Development")
@@ -179,6 +179,29 @@ class Build : NukeBuild
             );
         });
 
+    Target AngularImage => _ => _
+        .Executes(() =>
+        {
+            DockerBuild(s => s
+               .SetPath(RootDirectory / "angular")
+               .SetFile(RootDirectory / "angular" / "Dockerfile.angular")
+               .SetTag("angular")
+                );
+        });
+
+    Target AngularRun => _ => _
+        .DependsOn(AngularImage, ApiRun)
+        .Executes(() =>
+        {
+            DockerRun(s => s
+                .SetImage("angular")
+                .SetHostname("localhost")
+                .SetName("angular")
+                .SetPublish("80:80")
+                .SetDetach(true)
+                .SetNetwork("multi")
+            );
+        });
 
 
 
@@ -186,8 +209,8 @@ class Build : NukeBuild
     Target CleanUp => _ => _
         .Executes(() => 
         {
-            DockerStop(s => s.SetContainers("api", "db"));
-            DockerRm(s => s.SetContainers("api", "db"));
+            DockerStop(s => s.SetContainers("api", "db", "angular"));
+            DockerRm(s => s.SetContainers("api", "db", "angular"));
             DockerNetworkRm(s => s.SetNetworks("multi"));
         });
 

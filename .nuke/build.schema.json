@@ -71,17 +71,19 @@
           "items": {
             "type": "string",
             "enum": [
-              "apiImage",
-              "apiRun",
+              "AngularImage",
+              "AngularRun",
+              "ApiImage",
+              "ApiRun",
               "Clean",
-              "CleanAfterDockerRun",
+              "CleanUp",
               "Compile",
-              "createNetwork",
-              "dbImage",
-              "dbRun",
+              "CreateCommonNetwork",
+              "DbImage",
+              "DbRun",
               "Publish",
               "Restore",
-              "TestApi"
+              "UnitTestApi"
             ]
           }
         },
@@ -95,17 +97,19 @@
           "items": {
             "type": "string",
             "enum": [
-              "apiImage",
-              "apiRun",
+              "AngularImage",
+              "AngularRun",
+              "ApiImage",
+              "ApiRun",
               "Clean",
-              "CleanAfterDockerRun",
+              "CleanUp",
               "Compile",
-              "createNetwork",
-              "dbImage",
-              "dbRun",
+              "CreateCommonNetwork",
+              "DbImage",
+              "DbRun",
               "Publish",
               "Restore",
-              "TestApi"
+              "UnitTestApi"
             ]
           }
         },
