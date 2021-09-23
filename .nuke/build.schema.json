@@ -71,8 +71,12 @@
           "items": {
             "type": "string",
             "enum": [
+              "apiImage",
+              "apiRun",
               "Clean",
+              "CleanAfterDockerRun",
               "Compile",
+              "createNetwork",
               "dbImage",
               "dbRun",
               "Publish",
@@ -91,8 +95,12 @@
           "items": {
             "type": "string",
             "enum": [
+              "apiImage",
+              "apiRun",
               "Clean",
+              "CleanAfterDockerRun",
               "Compile",
+              "createNetwork",
               "dbImage",
               "dbRun",
               "Publish",

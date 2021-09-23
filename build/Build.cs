@@ -22,7 +22,7 @@ class Build : NukeBuild
 {
     // w tym miejscu jest punkt startowy projektu build
     // jeœli wpiszemy x.Compile, to pierwszy odpali siê target o nazwie Compile; z zachowaniem zale¿noœci (dependantFor, Before, czy Triggers)
-    public static int Main () => Execute<Build>(x => x.dbRun);
+    public static int Main () => Execute<Build>(x => x.apiRun);
 
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
@@ -39,7 +39,7 @@ class Build : NukeBuild
     AbsolutePath TestsDirectory => RootDirectory / "api" / "lukaKry.Calc.API.UnitTests";
 
     Target Clean => _ => _
-        .Before(Restore)
+        .DependentFor(Restore)
         .Executes(() =>
         {
             // dwie opcje znalaz³em 
@@ -68,7 +68,6 @@ class Build : NukeBuild
             // jesli z jakiegoœ powodu chcemy wskazaæ inny plik Ÿród³owy, to wtedy mo¿na to ustawiæ w tym targecie
             // jedynie warto zapamiêtaæ, ¿e restore jest wbudowane w inne komendy dotnet jak np. run, build, test, publish
             // jeœli teraz jawnie u¿yjemy restore, to potem trzeba pamiêtaæ, aby u¿yæ flagi --no-restore, celem pominiêcia powtórzenia tego kroku
-
             DotNetRestore(s => s
                 .SetProjectFile(Solution));
         });
@@ -77,8 +76,6 @@ class Build : NukeBuild
         .DependsOn(Restore)
         .Executes(() =>
         {
-            // teraz obczajamy komendê dotnet build
-
             DotNetBuild(s => s
                 .SetProjectFile(Solution)
                 .SetConfiguration(Configuration)
@@ -90,7 +87,7 @@ class Build : NukeBuild
     // cel2: skompilowaæ aplikacjê w kontenerze, opublikowaæ j¹ do nastêpnego kontenera i odpaliæ testy
     // cel3: odpaliæ wszystkie projekty w kontenerach i puszczenie testów
 
-    Target TestApi => _ => _
+    Target UnitTestApi => _ => _
         .DependsOn(Compile)
         .Executes(() =>
         {
@@ -115,39 +112,85 @@ class Build : NukeBuild
             );
         });
 
-    Target apiImage => _ => _
+
+    Target CreateCommonNetwork => _ => _
+        .DependsOn(TestApi)
+        .Executes(() =>
+        {
+            DockerNetworkCreate(s => s
+                .SetDriver("bridge")
+                .SetNetwork("multi")
+            );
+        });
+
+
+
+    Target DbImage => _ => _
+        .Executes(() =>
+        {
+            DockerBuild(s => s
+               .SetPath(RootDirectory / "api")
+               .SetFile(RootDirectory / "api" / "Dockerfile.mssql")
+               .SetTag("db")
+                );
+        });
+
+    Target DbRun => _ => _
+        .DependsOn(dbImage, createNetwork)
+        .Executes(() =>
+        {
+            DockerRun(s => s
+               .SetImage("db")
+               .SetName("db")
+               .SetHostname("db")
+               .SetPublish("51001:51001")
+               .SetDetach(true)
+               .SetNetwork("multi")
+                );
+        });
+
+    Target ApiImage => _ => _
         .Executes(() => 
         {
-            // stworzenie obrazu dla kontenera z api
-
             DockerBuild( s => s
-                .SetPath(RootDirectory / "api" / "lukaKry.Cal.api")
-                .SetFile(SourceDirectory / "Dockerfile.api")
+                .SetPath(RootDirectory / "api" )
+                .SetFile(RootDirectory / "api" / "Dockerfile.api")
                 .SetTag("api")
                 );
 
             
         });
 
-    Target apiRun => _ => _
-        .Executes(() => 
-        { 
-            
-        });
-
-    Target dbRun => _ => _
+    Target ApiRun => _ => _
+        .DependsOn(apiImage, dbRun)
         .Executes(() => 
         {
-            // pytanie nr 1 - jak dodaæ zmienne œrodowiskowe, bom ja tego nie widzim
-
+            // teraz pozosta³y problemy z certyfikatem ssl
             DockerRun(s => s
-               .AddProcessEnvironmentVariable("ACCEPT_EULA", "Y")
-               .AddProcessEnvironmentVariable("SA_PASSWORD", "P@ssword123")
-               .SetImage("mcr.microsoft.com/mssql/server:2019-latest")
-               .SetName("db")
-               .SetHostname("db")
-               .SetPublish("51433:51433")
-               .SetDetach(true)
-                );
+                .SetImage("api") 
+                .SetName("api")
+                .SetPublish("51444:443")
+                .SetPublish("51443:80")
+                .SetDetach(true)
+                .SetNetwork("multi")
+                .SetProcessEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Development")
+                .SetProcessEnvironmentVariable("ASPNETCORE_URLS", "https://+:443;http://+:80")
+
+            );
         });
+
+
+
+
+
+    Target CleanUp => _ => _
+        .Executes(() => 
+        {
+            DockerStop(s => s.SetContainers("api", "db"));
+            DockerRm(s => s.SetContainers("api", "db"));
+            DockerNetworkRm(s => s.SetNetworks("multi"));
+        });
+
+    
+    
 }
