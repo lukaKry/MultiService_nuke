@@ -18,6 +18,13 @@ pipeline {
 			}
 		}
 		
+		stage("advanced test") {
+		
+			steps {
+				echo ' advanced testing the application...'
+			}
+		}
+		
 		stage("deploy") {
 		
 			steps {
